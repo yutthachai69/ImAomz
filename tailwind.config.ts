@@ -1,6 +1,14 @@
 // tailwind.config.ts
 import type { Config } from "tailwindcss";
 
+/**
+ * ระบบสีสองสี — เหลือง = action/tag, ม่วง = accent/highlight
+ * ที่เหลือเป็นโทนกระดาษ (surface) กับหมึก (on-surface)
+ *
+ * เดิมไฟล์นี้คือ export ดิบจาก Material Theme Builder มี 47 สีแต่ใช้จริง 11
+ * สีที่ไม่ได้ใช้ถูกตัดออกโดยตั้งใจ — อย่าเพิ่มกลับมาถ้ายังไม่มีที่ใช้จริง
+ * โดยเฉพาะ tertiary/cyan ที่ถอดออกเพราะหลุดจากระบบและ contrast ไม่ผ่าน
+ */
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,68 +18,41 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Complete Neo-Brutalism color system from DESIGN.md
-        'surface': '#fff9ef',
-        'surface-dim': '#e1d9c7',
-        'surface-bright': '#fff9ef',
-        'surface-container-lowest': '#ffffff',
-        'surface-container-low': '#fbf3e0',
-        'surface-container': '#f6edda',
-        'surface-container-high': '#f0e7d5',
-        'surface-container-highest': '#eae2cf',
-        'on-surface': '#1f1b10',
-        'on-surface-variant': '#4d4732',
-        'inverse-surface': '#343024',
-        'inverse-on-surface': '#f9f0dd',
-        'outline': '#7e775f',
-        'outline-variant': '#d0c6ab',
-        'surface-tint': '#705d00',
-        'primary': '#705d00',
-        'on-primary': '#ffffff',
-        'primary-container': '#ffd700',
-        'on-primary-container': '#705e00',
-        'inverse-primary': '#e9c400',
-        'secondary': '#7b41b3',
-        'on-secondary': '#ffffff',
-        'secondary-container': '#c588fe',
-        'on-secondary-container': '#54118a',
-        'tertiary': '#00696f',
-        'on-tertiary': '#ffffff',
-        'tertiary-container': '#00f1ff',
-        'on-tertiary-container': '#006a70',
-        'error': '#ba1a1a',
-        'on-error': '#ffffff',
-        'error-container': '#ffdad6',
-        'on-error-container': '#93000a',
-        'primary-fixed': '#ffe16d',
-        'primary-fixed-dim': '#e9c400',
-        'on-primary-fixed': '#221b00',
-        'on-primary-fixed-variant': '#544600',
-        'secondary-fixed': '#f0dbff',
-        'secondary-fixed-dim': '#ddb7ff',
-        'on-secondary-fixed': '#2c0050',
-        'on-secondary-fixed-variant': '#622599',
-        'tertiary-fixed': '#79f5ff',
-        'tertiary-fixed-dim': '#00dbe8',
-        'on-tertiary-fixed': '#002022',
-        'on-tertiary-fixed-variant': '#004f54',
-        'background': '#fff9ef',
-        'on-background': '#1f1b10',
-        'surface-variant': '#eae2cf',
+        // --- กระดาษ: พื้นหลังไล่ระดับจากสว่างสุดไปเข้มสุด ---
+        surface: "#fff9ef", // พื้นหลังหลักของหน้า
+        "surface-container-lowest": "#ffffff", // การ์ดที่ต้องเด่นสุด
+        "surface-container": "#f6edda", // พื้นที่ว่าง / empty state
+        "surface-container-highest": "#eae2cf", // footer, การ์ดรอง
+
+        // --- หมึก: ใช้ตัวเดียวทั้งเว็บ ทั้งข้อความ เส้นขอบ และเงา ---
+        "on-surface": "#1f1b10",
+
+        // --- เหลือง = action, tag, ป้ายปี ---
+        "primary-container": "#ffd700",
+        "on-primary-container": "#705e00",
+
+        // --- ม่วง = accent, เส้นใต้หัวข้อ, ลิงก์เน้น ---
+        secondary: "#7b41b3",
+        "secondary-container": "#c588fe",
+        "on-secondary-container": "#54118a",
+        "secondary-fixed": "#f0dbff", // ม่วงอ่อนสุด ใช้เป็นพื้นไฮไลต์
       },
       fontFamily: {
-        h1: ["var(--font-lexend)"],
-        h2: ["var(--font-lexend)"],
-        h3: ["var(--font-lexend)"],
-        label: ["var(--font-space)"],
-        body: ["var(--font-inter)"],
-        sans: ["var(--font-inter)"],
+        // ต่อ --font-thai ท้ายทุก stack: เบราว์เซอร์เลือกฟอนต์ราย glyph
+        // ละติน = ฟอนต์หลัก, ไทย = Noto Sans Thai
+        h1: ["var(--font-lexend)", "var(--font-thai)", "sans-serif"],
+        h2: ["var(--font-lexend)", "var(--font-thai)", "sans-serif"],
+        h3: ["var(--font-lexend)", "var(--font-thai)", "sans-serif"],
+        label: ["var(--font-space)", "var(--font-thai)", "sans-serif"],
+        body: ["var(--font-inter)", "var(--font-thai)", "sans-serif"],
+        sans: ["var(--font-inter)", "var(--font-thai)", "sans-serif"],
       },
       boxShadow: {
-        // เงาสไตล์ Neo-Brutalism ที่คุณเห็นในรูป
-        'neo': '4px 4px 0px 0px rgba(31, 27, 16, 1)',
-        'neo-lg': '6px 6px 0px 0px rgba(31, 27, 16, 1)',
-      }
+        "neo-sm": "3px 3px 0px 0px rgba(31, 27, 16, 1)",
+        neo: "4px 4px 0px 0px rgba(31, 27, 16, 1)",
+        "neo-lg": "6px 6px 0px 0px rgba(31, 27, 16, 1)",
+        "neo-xl": "10px 10px 0px 0px rgba(31, 27, 16, 1)",
+      },
     },
   },
   plugins: [],

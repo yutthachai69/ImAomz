@@ -1,33 +1,36 @@
 // src/data/skills.ts
-export const skillCategories = [
+import type { Localized } from "@/i18n/config";
+
+/**
+ * สีผูกกับ "หมวด" ไม่ใช่ผูกกับทักษะรายตัว
+ * สีจึงเป็นข้อมูล (บอกว่าอยู่กลุ่มไหน) ไม่ใช่ของประดับแบบสุ่ม
+ */
+export const skillCategories: {
+  title: Localized;
+  accent: string;
+  skills: string[];
+}[] = [
   {
-    title: "Languages",
-    skills: [
-      { name: "TypeScript", color: "bg-primary-container" },
-      { name: "JavaScript", color: "bg-secondary-container" },
-      { name: "PHP", color: "bg-tertiary-container" },
-      { name: "Python", color: "bg-surface-container-highest" },
-    ]
+    title: { th: "ภาษาโปรแกรม", en: "Languages" },
+    accent: "bg-primary-container text-on-surface",
+    skills: ["TypeScript", "JavaScript", "PHP", "Python"],
   },
   {
-    title: "Development Tools",
+    title: { th: "เครื่องมือพัฒนา", en: "Development Tools" },
+    accent: "bg-secondary-container text-on-surface",
     skills: [
-      { name: "Next.js", color: "bg-primary-fixed-dim" },
-      { name: "React 19", color: "bg-secondary-fixed-dim" },
-      { name: "Prisma ORM", color: "bg-tertiary-fixed-dim" },
-      { name: "Tailwind CSS", color: "bg-surface-container-high" },
-      { name: "PostgreSQL", color: "bg-primary-container" },
-      { name: "Node.js", color: "bg-secondary-container" },
-      { name: "NextAuth.js", color: "bg-tertiary-container" },
-    ]
+      "Next.js",
+      "React 19",
+      "Prisma ORM",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "Node.js",
+      "NextAuth.js",
+    ],
   },
   {
-    title: "DevOps & Cloud",
-    skills: [
-      { name: "Docker", color: "bg-surface-container-highest" },
-      { name: "Git", color: "bg-primary-fixed-dim" },
-      { name: "Linux", color: "bg-secondary-fixed-dim" },
-      { name: "Vercel", color: "bg-tertiary-fixed-dim" },
-    ]
-  }
+    title: { th: "DevOps & Cloud", en: "DevOps & Cloud" },
+    accent: "bg-surface-container-highest text-on-surface",
+    skills: ["Docker", "Git", "Linux", "Vercel"],
+  },
 ];

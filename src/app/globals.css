@@ -1,8 +1,6 @@
 /* src/app/globals.css */
-@import "tailwindcss"; /* สำหรับ Tailwind v4 */
+@import "tailwindcss";
 @config "../../tailwind.config.ts";
-
-/* ถ้าใช้ v4 ไม่ต้องใช้ @tailwind base/components/utilities แล้วครับ */
 
 @layer base {
   body {
@@ -12,7 +10,6 @@
     overflow-x: hidden;
   }
 
-  /* Grainy Texture Overlay */
   body::before {
     content: "";
     position: fixed;
@@ -21,13 +18,14 @@
     width: 100%;
     height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.05;
+    opacity: 0.035;
     pointer-events: none;
-    z-index: 9999;
+    /* z-index ต่ำกว่า navbar (z-50) — เดิม 9999 ทำให้ grain ทับ UI ทุกชั้น */
+    z-index: 0;
     mix-blend-mode: multiply;
   }
 
-  /* Custom Brutalist Scrollbar */
+
   ::-webkit-scrollbar {
     width: 12px;
   }
@@ -53,11 +51,70 @@
     transform: translate(2px, 2px);
     box-shadow: none;
   }
+
+  .section-title {
+    @apply text-3xl sm:text-4xl font-black inline-block border-b-[6px] border-secondary pr-8 mb-4 uppercase tracking-tight font-h1;
+  }
+
+  .card-brutal {
+    @apply bg-white border-[4px] border-on-surface shadow-neo-lg transition-all;
+  }
+
+  .card-brutal:hover {
+    @apply shadow-none translate-x-1 translate-y-1;
+  }
+
+  /* ม่วง = accent, เหลือง = tag/action — ระบบสองสี ไม่มีฟ้านีออนแล้ว */
+  .badge-brutal {
+    @apply inline-block px-3 py-1 text-xs sm:text-sm font-bold uppercase tracking-widest bg-secondary-container text-on-secondary-container border-[3px] border-on-surface shadow-neo font-label;
+  }
+
+  .tag-brutal {
+    @apply px-3 py-1 border-[2px] border-on-surface bg-primary-container text-on-surface font-bold text-xs uppercase tracking-wider font-label;
+  }
+
+  /* ป้ายช่วงปี — ใช้ตัวเดียวกันทั้ง Experience และ Education */
+  .period-brutal {
+    @apply inline-block self-start px-3 py-1 text-sm font-bold uppercase tracking-wider bg-primary-container text-on-surface border-[2px] border-on-surface font-label whitespace-nowrap;
+  }
+
+  /* ชิปทักษะ: กว้างตามคำ เรียง flex-wrap ไม่เหลือช่องว่างห้อยท้ายเหมือน grid */
+  .chip-brutal {
+    @apply inline-flex items-center px-4 py-2 border-[3px] border-on-surface shadow-neo-sm font-bold text-sm uppercase tracking-wide font-label transition-all;
+  }
+
+  .chip-brutal:hover {
+    @apply shadow-none translate-x-[3px] translate-y-[3px];
+  }
+}
+
+/*
+ * กฎ typography ภาษาไทย — ต้องอยู่นอก @layer
+ * เพราะ utilities ของ Tailwind (leading-none, tracking-wider) อยู่ layer ที่ชนะ base เสมอ
+ *
+ * ไทยไม่มีตัวพิมพ์ใหญ่ และ letter-spacing จะดันสระ/วรรณยุกต์หลุดจากพยัญชนะ
+ * ส่วนที่เป็นอักษรละตินเสมอ (ชื่อเทคโนโลยี, แบรนด์) opt-out ด้วย .latin
+ */
+html[lang="th"] :not(.latin):not(.latin *) {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* สระบน/ล่างต้องการที่หายใจ — line-height 1 ทำให้ชนบรรทัดบน */
+html[lang="th"] h1,
+html[lang="th"] h2,
+html[lang="th"] h3,
+html[lang="th"] h4 {
+  line-height: 1.3;
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .animate-marquee {
@@ -81,10 +138,41 @@
 }
 
 @keyframes wiggle {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
 }
 
 .animate-wiggle {
   animation: wiggle 0.5s ease-in-out infinite;
+}
+
+/*
+ * เคารพการตั้งค่า "ลดการเคลื่อนไหว" ของระบบ
+ * .animate-slam ตั้ง opacity:0 ไว้ ต้อง force กลับเป็น 1 ไม่งั้นเนื้อหาจะหายทั้งหน้า
+ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-slam,
+  .animate-marquee,
+  .animate-wiggle {
+    animation: none !important;
+  }
+
+  .animate-slam {
+    opacity: 1;
+  }
+
+  .active-press,
+  .card-brutal,
+  .chip-brutal {
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }
